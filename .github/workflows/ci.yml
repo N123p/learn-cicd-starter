@@ -34,18 +34,12 @@ jobs:
         with:
           go-version: 1.22
 
-      # ✅ STRICT STYLE CHECK (assignment requires this)
       - name: Check Go formatting (strict)
         run: test -z "$(go fmt ./...)"
 
-      # 🟡 OPTIONAL: SOFT CHECK (uncomment if you don't want to fail CI)
-      # - name: Check Go formatting (soft, always passes)
-      #   run: |
-      #     files=$(go fmt ./...)
-      #     if [ -n "$files" ]; then
-      #       echo "These files are not formatted correctly:"
-      #       echo "$files"
-      #     else
-      #       echo "All files are properly formatted."
-      #     fi
+      - name: Install staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Run staticcheck
+        run: staticcheck ./...
 
